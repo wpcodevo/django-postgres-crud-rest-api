@@ -5,6 +5,7 @@ from feedback_api.serializers import FeedbackSerializer
 import math
 from datetime import datetime
 
+
 class Feedback(generics.GenericAPIView):
     serializer_class = FeedbackSerializer
     queryset = FeedbackModel.objects.all()
@@ -19,7 +20,8 @@ class Feedback(generics.GenericAPIView):
         total_feedback = feedback.count()
         if search_param:
             feedback = feedback.filter(title__icontains=search_param)
-        serializer = self.serializer_class(feedback[start_num:end_num], many=True)
+        serializer = self.serializer_class(
+            feedback[start_num:end_num], many=True)
         return Response({
             "status": "success",
             "total": total_feedback,
@@ -35,6 +37,7 @@ class Feedback(generics.GenericAPIView):
             return Response({"status": "success", "data": {"feedback": serializer.data}}, status=status.HTTP_201_CREATED)
         else:
             return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class FeedbackDetail(generics.GenericAPIView):
     queryset = FeedbackModel.objects.all()
